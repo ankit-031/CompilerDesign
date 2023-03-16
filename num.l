@@ -1,28 +1,14 @@
-%{ 
+%{
+/* Definition section */
 #include<stdio.h>
-int x=0;
+#include "Numsys.tab.h"
 %}
-
-Keyword (convert|Convert|CONVERT|to|To|TO)
-NumberSystem (binary|Binary|BINARY|octal|Octal|OCTAL|hexadecimal|Hexadecimal|HEXADECIMAL)
-Digit [0-9]
-Dm [\t\n]
-Space {Dm}+|[ ]
-Text [a-zA-Z]+
-
+/* Rule Section */
 %%
-
-{Keyword} {printf("Keyword:%s\n",yytext); x++;}
-{NumberSystem} {printf("NumberSystem:%s\n",yytext); x++;}
-{Digit} {printf("Value:%s\n",yytext); x++;}
-{Space} {}
-{Text} {printf("text:%s\n",yytext); x++;}
-. {}
-
+[0-9]+ {printf("Digit: %s\n",yytext); return digit;}
+"Convert "|"to "|"text " {printf("Keyword: %s\n",yytext); return k;}
+"binary"|"octal"|"hexadecimal" {printf("Operation: %s\n",yytext); return op;}
 %%
-
-int yywrap(){return 1;}
-int main() {
-    yylex(); 
-    return 0; 
+int yywrap() {
+return 1;
 }
